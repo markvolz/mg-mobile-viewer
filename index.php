@@ -251,10 +251,15 @@ function GetClientAgent()
 
 function CreateRuntimeMap($resourceSrvc, $sessionId, $mdfId)
 {
-    $map = new MgMap();
+    $userInfo = new MgUserInformation($sessionId);
+    $siteConnection = new MgSiteConnection();
+    $siteConnection->Open($userInfo);
+
+    $map = new MgMap($siteConnection);
     $resId = new MgResourceIdentifier($mdfId);
     $mapName = $resId->GetName();
-    $map->Create($resourceSrvc, $resId, $mapName);
+    $map->Create($resId, $mapName);
+
 
     //create an empty selection object and store it in the session repository
     $sel = new MgSelection($map);
